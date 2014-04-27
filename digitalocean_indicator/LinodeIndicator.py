@@ -102,13 +102,27 @@ class Indicator:
                                                        Gtk.IconSize.MENU)
                     droplet_item.set_image(img)
                 droplet_item.show()
-                # sub_menu = Gtk.Menu.new()
+                sub_menu = Gtk.Menu.new()
 
                 # ip = Gtk.MenuItem.new()
                 # # ip.set_label(_("IP: ") + str(droplet.ip_address))
                 # ip.connect('activate', self.on_ip_clicked)
                 # ip.show()
                 # sub_menu.append(ip)
+                image_id = Gtk.MenuItem.new()
+                image_id.set_label(_("Type: ") + server["DISTRIBUTIONVENDOR"])
+                image_id.show()
+                sub_menu.append(image_id)
+
+                mem_id = Gtk.MenuItem.new()
+                mem_id.set_label(_("RAM: ") + str(server["TOTALRAM"]) + "MB")
+                mem_id.show()
+                sub_menu.append(mem_id)
+
+                hd_id = Gtk.MenuItem.new()
+                hd_id.set_label(_("HD: ") + str(server["TOTALHD"]/1000) + "GB")
+                hd_id.show()
+                sub_menu.append(hd_id)
 
                 # images = manager.get_all_images()
                 # for i in images:
@@ -140,16 +154,16 @@ class Indicator:
                 #         sub_menu.append(size_id)
                 #         break
 
-                # seperator = Gtk.SeparatorMenuItem.new()
-                # seperator.show()
-                # sub_menu.append(seperator)
+                seperator = Gtk.SeparatorMenuItem.new()
+                seperator.show()
+                sub_menu.append(seperator)
 
-                # web = Gtk.MenuItem.new()
-                # web.set_label(_("View on web..."))
-                # droplet_url = "https://cloud.digitalocean.com/droplets/%s" % droplet.id
-                # web.connect('activate', self.open_web_link, droplet_url)
-                # web.show()
-                # sub_menu.append(web)
+                web = Gtk.MenuItem.new()
+                web.set_label(_("View on web..."))
+                droplet_url = "https://manager.linode.com/linodes/dashboard/%s" % server["LABEL"]
+                web.connect('activate', self.open_web_link, droplet_url)
+                web.show()
+                sub_menu.append(web)
 
                 # if droplet.status == "active":
                 #     power_off = Gtk.ImageMenuItem.new_with_label(
@@ -191,8 +205,8 @@ class Indicator:
                 #     power_on.show()
                 #     sub_menu.append(power_on)
 
-                # sub_menu.show()
-                # droplet_item.set_submenu(sub_menu)
+                sub_menu.show()
+                droplet_item.set_submenu(sub_menu)
                 self.menu.append(droplet_item)
         except Exception, e:
             if e.message:
