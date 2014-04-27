@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-13 16:24-0400\n"
+"POT-Creation-Date: 2014-04-27 20:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,35 +33,35 @@ msgstr ""
 msgid "Type: "
 msgstr ""
 
-#: ../digitalocean_indicator/DoIndicator.py:141
+#: ../digitalocean_indicator/DoIndicator.py:142
 msgid "Region: "
 msgstr ""
 
-#: ../digitalocean_indicator/DoIndicator.py:150
+#: ../digitalocean_indicator/DoIndicator.py:152
 msgid "Size: "
 msgstr ""
 
-#: ../digitalocean_indicator/DoIndicator.py:159
+#: ../digitalocean_indicator/DoIndicator.py:162
 msgid "View on web..."
 msgstr ""
 
-#: ../digitalocean_indicator/DoIndicator.py:169
+#: ../digitalocean_indicator/DoIndicator.py:170
 msgid "Power off..."
 msgstr ""
 
-#: ../digitalocean_indicator/DoIndicator.py:181
+#: ../digitalocean_indicator/DoIndicator.py:182
 msgid "Reboot..."
 msgstr ""
 
-#: ../digitalocean_indicator/DoIndicator.py:195
+#: ../digitalocean_indicator/DoIndicator.py:196
 msgid "Power on..."
 msgstr ""
 
-#: ../digitalocean_indicator/DoIndicator.py:215
+#: ../digitalocean_indicator/DoIndicator.py:216
 msgid "Error logging in. Please check your credentials."
 msgstr ""
 
-#: ../digitalocean_indicator/DoIndicator.py:218
+#: ../digitalocean_indicator/DoIndicator.py:219
 msgid "No network connection."
 msgstr ""
 

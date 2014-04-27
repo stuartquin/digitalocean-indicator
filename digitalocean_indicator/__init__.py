@@ -20,6 +20,7 @@ from locale import gettext as _
 from gi.repository import Gtk  # pylint: disable=E0611
 
 from digitalocean_indicator import DoIndicator
+from digitalocean_indicator import LinodeIndicator
 
 from digitalocean_indicator_lib import set_up_logging, get_version
 
@@ -40,5 +41,5 @@ def main():
     parse_options()
 
     # Run the application.
-    do_indicator = DoIndicator.Indicator()
+    do_indicator = LinodeIndicator.Indicator()
     Gtk.main()
