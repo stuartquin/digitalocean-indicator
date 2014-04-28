@@ -21,7 +21,7 @@ class Indicator:
                          '',
                          AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
         self.indicator.set_status(AppIndicator3.IndicatorStatus.ACTIVE)
-        icon_uri = get_media_file("digitalocean-indicator.svg")
+        icon_uri = get_media_file("linode-indicator.svg")
         icon_path = icon_uri.replace("file:///", '')
         self.indicator.set_icon(icon_path)
 
