@@ -36,10 +36,14 @@ def parse_options():
     set_up_logging(options)
 
 
-def main():
+def main(mode):
     'constructor for your class instances'
     parse_options()
 
     # Run the application.
-    do_indicator = LinodeIndicator.Indicator()
+    if mode == "digitalocean":
+        do_indicator = DoIndicator.Indicator()
+    else:
+        do_indicator = LinodeIndicator.Indicator()
+        
     Gtk.main()

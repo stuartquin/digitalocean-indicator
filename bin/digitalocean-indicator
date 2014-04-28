@@ -43,4 +43,10 @@ if python_path:
     os.putenv('PYTHONPATH', "%s:%s" % (os.getenv('PYTHONPATH', ''), ':'.join(python_path))) # for subprocesses
 
 import digitalocean_indicator
-digitalocean_indicator.main()
+
+if len(sys.argv) > 1:
+    mode = sys.argv[1]
+else:
+    mode = "digitalocean"
+
+digitalocean_indicator.main(mode)
