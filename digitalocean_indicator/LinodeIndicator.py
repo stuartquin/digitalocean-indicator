@@ -144,36 +144,6 @@ class Indicator:
                 hd_id.show()
                 sub_menu.append(hd_id)
 
-                # images = manager.get_all_images()
-                # for i in images:
-                #     if i.id == droplet.image_id:
-                #         image = i.name
-                #         image_id = Gtk.MenuItem.new()
-                #         image_id.set_label(_("Type: ") + image)
-                #         image_id.show()
-                #         sub_menu.append(image_id)
-                #         break
-
-                # regions = manager.get_all_regions()
-                # for r in regions:
-                #     if r.id == droplet.region_id:
-                #         region = r.name
-                #         region_id = Gtk.MenuItem.new()
-                #         region_id.set_label(_("Region: ") + region)
-                #         region_id.show()
-                #         sub_menu.append(region_id)
-                #         break
-
-                # sizes = manager.get_all_sizes()
-                # for s in sizes:
-                #     if s.id == droplet.size_id:
-                #         size = s.name
-                #         size_id = Gtk.MenuItem.new()
-                #         size_id.set_label(_("Size: ") + size)
-                #         size_id.show()
-                #         sub_menu.append(size_id)
-                #         break
-
                 seperator = Gtk.SeparatorMenuItem.new()
                 seperator.show()
                 sub_menu.append(seperator)
@@ -185,45 +155,48 @@ class Indicator:
                 web.show()
                 sub_menu.append(web)
 
-                # if droplet.status == "active":
-                #     power_off = Gtk.ImageMenuItem.new_with_label(
-                #         _("Power off..."))
-                #     power_off.set_always_show_image(True)
-                #     img = Gtk.Image.new_from_icon_name("system-shutdown",
-                #                                        Gtk.IconSize.MENU)
-                #     power_off.set_image(img)
-                #     power_off.connect('activate',
-                #                       self.on_power_toggled,
-                #                       droplet,
-                #                       'off')
-                #     power_off.show()
-                #     sub_menu.append(power_off)
+                if server["STATUS"] == 1:
+                    power_off = Gtk.ImageMenuItem.new_with_label(
+                        _("Power off..."))
+                    power_off.set_always_show_image(True)
+                    img = Gtk.Image.new_from_icon_name("system-shutdown",
+                                                       Gtk.IconSize.MENU)
+                    power_off.set_image(img)
+                    power_off.connect('activate',
+                                      self.on_power_toggled,
+                                      server,
+                                      'off',
+                                      manager)
+                    power_off.show()
+                    sub_menu.append(power_off)
 
-                #     reboot = Gtk.ImageMenuItem.new_with_label(_("Reboot..."))
-                #     reboot.set_always_show_image(True)
-                #     img = Gtk.Image.new_from_icon_name("system-reboot",
-                #                                        Gtk.IconSize.MENU)
-                #     reboot.set_image(img)
-                #     reboot.connect('activate',
-                #                    self.on_power_toggled,
-                #                    droplet,
-                #                    'reboot')
-                #     reboot.show()
-                #     sub_menu.append(reboot)
+                    reboot = Gtk.ImageMenuItem.new_with_label(_("Reboot..."))
+                    reboot.set_always_show_image(True)
+                    img = Gtk.Image.new_from_icon_name("system-reboot",
+                                                       Gtk.IconSize.MENU)
+                    reboot.set_image(img)
+                    reboot.connect('activate',
+                                   self.on_power_toggled,
+                                   server,
+                                   'reboot',
+                                   manager)
+                    reboot.show()
+                    sub_menu.append(reboot)
 
-                # else:
-                #     power_on = Gtk.ImageMenuItem.new_with_label(
-                #         _("Power on..."))
-                #     power_on.set_always_show_image(True)
-                #     img = Gtk.Image.new_from_icon_name("gtk-ok",
-                #                                        Gtk.IconSize.MENU)
-                #     power_on.set_image(img)
-                #     power_on.connect('activate',
-                #                      self.on_power_toggled,
-                #                      droplet,
-                #                      'on')
-                #     power_on.show()
-                #     sub_menu.append(power_on)
+                else:
+                    power_on = Gtk.ImageMenuItem.new_with_label(
+                        _("Power on..."))
+                    power_on.set_always_show_image(True)
+                    img = Gtk.Image.new_from_icon_name("gtk-ok",
+                                                       Gtk.IconSize.MENU)
+                    power_on.set_image(img)
+                    power_on.connect('activate',
+                                     self.on_power_toggled,
+                                     server,
+                                     'on',
+                                     manager)
+                    power_on.show()
+                    sub_menu.append(power_on)
 
                 sub_menu.show()
                 droplet_item.set_submenu(sub_menu)
@@ -265,26 +238,15 @@ class Indicator:
     def open_web_link(self, widget, url):
         Gtk.show_uri(None, url, Gdk.CURRENT_TIME)
 
-    def on_power_toggled(self, widget, droplet, action):
+    def on_power_toggled(self, widget, server, action, manager):
         if action is "on":
-            droplet.power_on()
+            manager.linode_boot(LINODEID=server["LINODEID"])
         elif action is "reboot":
-            droplet.reboot()
+            manager.linode_reboot(LINODEID=server["LINODEID"])
         else:
-            droplet.power_off()
-        events = droplet.get_events()
+            manager.linode_shutdown(LINODEID=server["LINODEID"])
+        manager.batchFlush()
         loading = True
-        while loading:
-            for event in events:
-                event.load()
-                try:
-                    if int(event.percentage) < 100:
-                        time.sleep(2)
-                    else:
-                        loading = False
-                        break
-                except TypeError:  # Not yet reporting any percentage
-                    pass
         self.rebuild_menu()
 
     def on_preferences_changed(self, settings, key, data=None):
