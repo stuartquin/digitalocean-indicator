@@ -87,9 +87,23 @@ class Indicator:
 
     def add_servers(self):
         try:
-            # TODO Make this configable
-            manager = api.Api(os.environ['LINODE_API_KEY'])
-            servers = manager.linode_list()
+            if not self.do_api_key:
+                no_key_id = Gtk.MenuItem.new()
+                no_key_id.set_label("Please Set API Key in Preferences")
+                no_key_id.show()
+                self.menu.append(no_key_id)
+                return
+
+            manager = api.Api(key=self.do_api_key, batching=True)
+            manager.linode_list()
+            manager.avail_datacenters()
+            results = manager.batchFlush()
+
+            servers = results[0]['DATA']
+            data_centers = {}
+            for dc in results[1]['DATA']:
+                data_centers[dc["DATACENTERID"]] = dc["LOCATION"]
+
             for server in servers:
                 droplet_item = Gtk.ImageMenuItem.new_with_label(server["LABEL"])
                 droplet_item.set_always_show_image(True)
@@ -113,6 +127,12 @@ class Indicator:
                 image_id.set_label(_("Type: ") + server["DISTRIBUTIONVENDOR"])
                 image_id.show()
                 sub_menu.append(image_id)
+
+                region = data_centers[server["DATACENTERID"]]
+                region_id = Gtk.MenuItem.new()
+                region_id.set_label(_("Region: ") + region)
+                region_id.show()
+                sub_menu.append(region_id)
 
                 mem_id = Gtk.MenuItem.new()
                 mem_id.set_label(_("RAM: ") + str(server["TOTALRAM"]) + "MB")
