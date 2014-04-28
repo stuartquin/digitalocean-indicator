@@ -26,8 +26,6 @@ locale.textdomain('digitalocean-indicator')
 PROJECT_ROOT_DIRECTORY = os.path.abspath(
     os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0]))))
 
-print PROJECT_ROOT_DIRECTORY
-
 python_path = []
 if os.path.abspath(__file__).startswith('/opt'):
     locale.bindtextdomain('digitalocean-indicator', '/opt/extras.ubuntu.com/digitalocean-indicator/share/locale')
